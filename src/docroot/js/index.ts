@@ -1,7 +1,7 @@
 import moduleFunction from '../../modules/module';
 // import { gsap } from 'gsap';
 
-let a = 1;
+const a = 1;
 console.log(moduleFunction('Hello World!'));
 // gsap.to("#rect", {
 //   duration: 2,

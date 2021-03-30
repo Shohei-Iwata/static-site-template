@@ -9,6 +9,7 @@ const styleLint = require('stylelint');
 const webpackStream = require('webpack-stream');
 const webpackConfig = require('./webpack.config.js');
 const webpack = require('webpack');
+const eslint = require('gulp-eslint');
 const browserSync = require('browser-sync');
 
 const src = {
@@ -56,6 +57,21 @@ function tsCompile(cb) {
   cb();
 }
 
+// eslint
+function checkEslint() {
+  return gulp.src(src.ts)
+    .pipe(eslint({ useEslintrc: true }))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
+}
+function fixEslint() {
+  return gulp.src(src.ts)
+    .pipe(eslint({ useEslintrc: true, fix: true }))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
+    .pipe(gulp.dest(src.root));
+}
+
 // browser start
 function browserStart(cb) {
   browserSync.init({
@@ -82,6 +98,8 @@ function watchFiles(cb) {
   cb();
 }
 
+exports.eslint = checkEslint;
+exports.eslintFix = fixEslint;
 exports.build = gulp.parallel(
   ejsCompile,
   sassCompile,
